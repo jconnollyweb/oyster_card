@@ -31,11 +31,17 @@ describe Oystercard do
     end
 
     it 'can touch_in' do
+        subject.top_up(1)
         subject.touch_in
         expect(subject).to be_in_journey
     end
 
+    it 'raises error if insufficient funds' do
+        expect { subject.touch_in }.to raise_error "You have insufficient funds"
+    end
+
     it 'can touch_out' do
+        subject.top_up(1)
         subject.touch_in
         subject.touch_out
         expect(subject).not_to be_in_journey
