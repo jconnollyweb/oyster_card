@@ -40,11 +40,24 @@ describe Oystercard do
         expect { subject.touch_in }.to raise_error "You have insufficient funds"
     end
 
-    it 'can touch_out' do
-        subject.top_up(1)
-        subject.touch_in
-        subject.touch_out
-        expect(subject).not_to be_in_journey
+    describe "touch_out "
+        # before do
+        # subject.instance_variable_set  (@balance: 5)
+        # end 
+        it 'can touch_out' do
+            subject.top_up(5)
+            subject.touch_in
+            subject.touch_out
+            expect(subject).not_to be_in_journey
+        
+        end
+        it 'can charge you for the journey' do
+            subject.top_up(5)
+            subject.touch_in
+            subject.touch_out
+            expect{subject.touch_out}.to change {subject.balance}.by(-Oystercard::MINIMUM_CHARGE) 
+
+        end
     end
 
 end 
